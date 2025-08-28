@@ -2,6 +2,19 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: false },
+  nitro: {
+    experimental: {
+      wasm: false
+    },
+    minify: false
+  },
+  vite: {
+    server: {
+      hmr: {
+        port: 24678
+      }
+    }
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt'
