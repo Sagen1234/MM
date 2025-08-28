@@ -149,7 +149,19 @@ definePageMeta({
 })
 
 const { modelMetrics, dailyStats, generateMockTransactions } = useFraudData()
+const { getCurrentModel, getModelMetrics } = useModelConfig()
 
+// Load saved model configuration if available
+const savedModel = getCurrentModel()
+if (savedModel) {
+  // Update model metrics with saved configuration
+  modelMetrics.value = {
+    ...modelMetrics.value,
+    accuracy: (savedModel.accuracy * 100).toFixed(1),
+    status: savedModel.status || 'active',
+    lastUpdated: new Date(savedModel.trainedAt)
+  }
+}
 const recentTransactions = computed(() => {
   return generateMockTransactions(10).filter(t => t.riskScore > 60).slice(0, 5)
 })

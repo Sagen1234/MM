@@ -315,10 +315,27 @@ const startTraining = async () => {
       modelId: result.model_id
     }
 
-    localStorage.clear()
-    localStorage.setItem("accuracy", result.accuracy)
-    localStorage.setItem("time", result.training_time)
-    localStorage.setItem("model", result.model_id)
+    // Save complete model configuration to localStorage
+    const modelConfig = {
+      modelId: result.model_id,
+      accuracy: result.accuracy,
+      trainingTime: result.training_time,
+      algorithm: config.algorithm,
+      testSplit: config.testSplit,
+      randomState: config.randomState,
+      trainedAt: new Date().toISOString(),
+      fileName: selectedFile.value?.name || 'unknown',
+      fileSize: selectedFile.value?.size || 0,
+      samples: result.samples || 0,
+      status: 'active'
+    }
+    
+    localStorage.setItem('currentModelConfig', JSON.stringify(modelConfig))
+    localStorage.setItem('modelHistory', JSON.stringify([
+      ...getModelHistory(),
+      modelConfig
+    ]))
+    
     // Add to training history
     trainingHistory.value.unshift({
       id: Date.now(),
@@ -353,10 +370,51 @@ const formatDate = (date: Date) => {
   return format(date, 'MMM dd, yyyy HH:mm')
 }
 
+// Helper function to get model history from localStorage
+const getModelHistory = () => {
+  try {
+    const history = localStorage.getItem('modelHistory')
+    return history ? JSON.parse(history) : []
+  } catch (error) {
+    console.error('Error parsing model history:', error)
+    return []
+  }
+}
+
+// Helper function to get current model config
+const getCurrentModelConfig = () => {
+  try {
+    const config = localStorage.getItem('currentModelConfig')
+    return config ? JSON.parse(config) : null
+  } catch (error) {
+    console.error('Error parsing current model config:', error)
+    return null
+  }
+}
+
 // Load any existing training history from localStorage on component mount
 onMounted(() => {
-  // You could load training history from localStorage or make an API call
-  // to get previous training sessions if your backend supports it
+  // Load existing model configuration and training history
+  const savedConfig = getCurrentModelConfig()
+  if (savedConfig) {
+    lastTraining.value = {
+      accuracy: savedConfig.accuracy,
+      samples: savedConfig.samples,
+      trainingTime: savedConfig.trainingTime,
+      modelId: savedConfig.modelId
+    }
+  }
+  
+  // Load training history
+  const history = getModelHistory()
+  trainingHistory.value = history.map(item => ({
+    id: Date.now() + Math.random(),
+    algorithm: item.algorithm || 'Logistic Regression',
+    date: new Date(item.trainedAt),
+    accuracy: item.accuracy,
+    trainingTime: item.trainingTime,
+    modelId: item.modelId
+  }))
 })
 </script>
 

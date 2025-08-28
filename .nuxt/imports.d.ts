@@ -32,4 +32,5 @@ export { computedAsync, asyncComputed, computedEager, eagerComputed, computedInj
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { useAuth } from '../composables/useAuth';
 export { useFraudData } from '../composables/useFraudData';
+export { useModelConfig } from '../composables/useModelConfig';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';

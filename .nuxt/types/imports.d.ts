@@ -249,6 +249,7 @@ declare global {
   const useMemoize: typeof import('../../node_modules/@vueuse/core')['useMemoize']
   const useMemory: typeof import('../../node_modules/@vueuse/core')['useMemory']
   const useModel: typeof import('../../node_modules/vue')['useModel']
+  const useModelConfig: typeof import('../../composables/useModelConfig')['useModelConfig']
   const useMounted: typeof import('../../node_modules/@vueuse/core')['useMounted']
   const useMouse: typeof import('../../node_modules/@vueuse/core')['useMouse']
   const useMouseInElement: typeof import('../../node_modules/@vueuse/core')['useMouseInElement']
@@ -657,6 +658,7 @@ declare module 'vue' {
     readonly useMemoize: UnwrapRef<typeof import('../../node_modules/@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('../../node_modules/@vueuse/core')['useMemory']>
     readonly useModel: UnwrapRef<typeof import('../../node_modules/vue')['useModel']>
+    readonly useModelConfig: UnwrapRef<typeof import('../../composables/useModelConfig')['useModelConfig']>
     readonly useMounted: UnwrapRef<typeof import('../../node_modules/@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('../../node_modules/@vueuse/core')['useMouse']>
     readonly useMouseInElement: UnwrapRef<typeof import('../../node_modules/@vueuse/core')['useMouseInElement']>
